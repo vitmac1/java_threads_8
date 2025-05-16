@@ -2,6 +2,7 @@ package au.id.deejay.webserver;
 
 
 import au.id.deejay.webserver.handler.DocrootHandler;
+import au.id.deejay.webserver.handler.MatrizHandler;
 import au.id.deejay.webserver.handler.ServerInfoHandler;
 import au.id.deejay.webserver.server.WebServer;
 import au.id.deejay.webserver.api.RequestHandler;
@@ -47,9 +48,9 @@ public class App {
 
 		// Configure request handlers
 		RequestHandler serverInfoHandler = new ServerInfoHandler(port, timeout, maxThreads, docroot, System.currentTimeMillis());
-		RequestHandler docrootHandler = new DocrootHandler(docroot, Collections.singletonList("index.html"), true);
+		RequestHandler matrizHandler = new MatrizHandler();
 
-		List<RequestHandler> requestHandlers = Arrays.asList(serverInfoHandler, docrootHandler);
+		List<RequestHandler> requestHandlers = Arrays.asList(matrizHandler, serverInfoHandler);
 
 		// Create the server
 		WebServer server = new WebServer(port, timeout, maxThreads, requestHandlers);
