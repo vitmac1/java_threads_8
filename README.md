@@ -162,12 +162,12 @@ First, we'll create a new `Response` type that outputs the current time as plain
 directly, but this way we can keep the code cleaner and easier to test.
 
 ```java
-import au.id.deejay.webserver.api.HttpStatus;
-import au.id.deejay.webserver.api.HttpVersion;
-import au.id.deejay.webserver.api.Response;
-import au.id.deejay.webserver.headers.Headers;
-import au.id.deejay.webserver.headers.HttpHeader;
-import au.id.deejay.webserver.headers.HttpHeaders;
+import api.thread.webserver.HttpStatus;
+import api.thread.webserver.HttpVersion;
+import api.thread.webserver.Response;
+import headers.thread.webserver.Headers;
+import headers.thread.webserver.HttpHeader;
+import headers.thread.webserver.HttpHeaders;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -176,60 +176,60 @@ import java.time.format.DateTimeFormatter;
 
 public class CurrentTimeResponse implements Response {
 
-	private final String timeString;
+    private final String timeString;
 
-	public CurrentTimeResponse() {
-		// Convert the current time into a string
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a");
-		timeString = "The time is " + LocalDateTime.now().format(formatter);
-	}
+    public CurrentTimeResponse() {
+        // Convert the current time into a string
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a");
+        timeString = "The time is " + LocalDateTime.now().format(formatter);
+    }
 
-	@Override
-	public HttpStatus status() {
-		return HttpStatus.OK_200;
-	}
+    @Override
+    public HttpStatus status() {
+        return HttpStatus.OK_200;
+    }
 
-	@Override
-	public InputStream stream() {
-		return new ByteArrayInputStream(timeString.getBytes());
-	}
+    @Override
+    public InputStream stream() {
+        return new ByteArrayInputStream(timeString.getBytes());
+    }
 
-	@Override
-	public Headers headers() {
-		return new HttpHeaders(
-				new HttpHeader("Content-type", "text/plain"),
-				new HttpHeader("Content-length", String.valueOf(timeString.length())));
-	}
+    @Override
+    public Headers headers() {
+        return new HttpHeaders(
+                new HttpHeader("Content-type", "text/plain"),
+                new HttpHeader("Content-length", String.valueOf(timeString.length())));
+    }
 
-	@Override
-	public HttpVersion version() {
-		return HttpVersion.HTTP_1_0;
-	}
+    @Override
+    public HttpVersion version() {
+        return HttpVersion.HTTP_1_0;
+    }
 }
 ```
 
 Now we'll create a `RequestHandler` to capture requests to `/time` and respond using our new response type:
 
 ```java
-import au.id.deejay.webserver.api.HttpMethod;
-import au.id.deejay.webserver.api.Request;
-import au.id.deejay.webserver.api.RequestHandler;
-import au.id.deejay.webserver.api.Response;
+import api.thread.webserver.HttpMethod;
+import api.thread.webserver.Request;
+import api.thread.webserver.RequestHandler;
+import api.thread.webserver.Response;
 import au.id.deejay.webserver.response.CurrentTimeResponse;
 
 public class CurrentTimeHandler implements RequestHandler {
 
-	private static final String PATH = "/time";
+    private static final String PATH = "/time";
 
-	@Override
-	public boolean canHandle(Request request) {
-		return request.method() == HttpMethod.GET && PATH.equals(request.uri().getPath());
-	}
+    @Override
+    public boolean canHandle(Request request) {
+        return request.method() == HttpMethod.GET && PATH.equals(request.uri().getPath());
+    }
 
-	@Override
-	public Response handle(Request request) {
-		return new CurrentTimeResponse();
-	}
+    @Override
+    public Response handle(Request request) {
+        return new CurrentTimeResponse();
+    }
 }
 ```
 
