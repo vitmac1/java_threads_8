@@ -7,9 +7,9 @@ import java.util.stream.Stream;
 @Getter
 public enum MatrizEnum {
 
-    PEQUENA(100),
-    MEDIA(500),
-    GRANDE(1000);
+    PEQUENA(1000),
+    MEDIA(2000),
+    GRANDE(3000);
 
     private final int tamanho;
 
